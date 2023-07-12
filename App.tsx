@@ -1,20 +1,58 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+/* eslint-disable global-require */
+import React, { useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import Routes from '@/screens/Routes';
+import {
+  Inter_300Light as interLight,
+  Inter_400Regular as interRegular,
+  Inter_700Bold as interBold,
+  useFonts,
+} from '@expo-google-fonts/inter';
+import {
+  Nunito_400Regular as nunitoRegular,
+  Nunito_700Bold as nunitoBold,
+  Nunito_900Black as nunitoBlack,
+} from '@expo-google-fonts/nunito';
+import * as SplashScreen from 'expo-splash-screen';
+import { ActivityIndicator } from 'react-native';
+// import { ThemeProvider } from 'styled-components/native';
+import { ThemeProvider } from '@/theme/Theme';
 
-export default function App() {
+export default function App(): JSX.Element {
+  const [fontsLoaded] = useFonts({
+    interLight,
+    interRegular,
+    interBold,
+    nunitoRegular,
+    nunitoBold,
+    nunitoBlack,
+    SFPRODisplayRegular: require('./src/assets/fonts/SF-Pro-Display-Regular.otf'),
+    SFPRODisplayMedium: require('./src/assets/fonts/SF-Pro-Display-Medium.otf'),
+    SFPRODisplayBold: require('./src/assets/fonts/SF-Pro-Display-Bold.otf'),
+    SFPROTextRegular: require('./src/assets/fonts/SF-Pro-Text-Regular.otf'),
+    SFPROTextMedium: require('./src/assets/fonts/SF-Pro-Text-Medium.otf'),
+    SFPROTextBold: require('./src/assets/fonts/SF-Pro-Text-Bold.otf'),
+  });
+
+  useEffect(() => {
+    async function prepare(): Promise<void> {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    void prepare();
+  }, []);
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator />;
+  }
+
+  void SplashScreen.hideAsync();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Routes />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
