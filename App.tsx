@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from '@/screens/Routes';
