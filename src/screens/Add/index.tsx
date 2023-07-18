@@ -1,9 +1,8 @@
 import LocationResult from '@/components/LocationResult';
 import SearchInput from '@/components/SearchInput';
 import { type SearchResult, getSearch } from '@/components/utils/getWeather';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import CityContext, { City } from '@/database/CityContext';
 import * as S from './styles';
 
 export default function Add(): JSX.Element {
@@ -27,24 +26,6 @@ export default function Add(): JSX.Element {
         console.log(err);
       });
   }
-
-  const { useRealm, useQuery, useObject } = CityContext;
-
-  const realm = useRealm();
-
-  const handleAddCity = useCallback(
-    (url: string): void => {
-      if (url.length === 0) {
-        return;
-      }
-      realm.write(() => {
-        realm.create('City', City.generate(url));
-      });
-    },
-    [realm],
-  );
-
-  const cities = useQuery(City);
 
   console.log('====================================');
   console.log(cities);

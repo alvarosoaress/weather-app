@@ -16,12 +16,9 @@ import {
 } from '@expo-google-fonts/nunito';
 import * as SplashScreen from 'expo-splash-screen';
 import { ActivityIndicator } from 'react-native';
-// import { ThemeProvider } from 'styled-components/native';
 import { ThemeProvider } from '@/theme/Theme';
-import CityContext from '@/database/CityContext';
 
 export default function App(): JSX.Element {
-  const { RealmProvider } = CityContext;
   const [fontsLoaded] = useFonts({
     interLight,
     interRegular,
@@ -52,12 +49,10 @@ export default function App(): JSX.Element {
   void SplashScreen.hideAsync();
 
   return (
-    <RealmProvider>
-      <ThemeProvider>
-        <NavigationContainer>
-          <Routes />
-        </NavigationContainer>
-      </ThemeProvider>
-    </RealmProvider>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Routes />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
