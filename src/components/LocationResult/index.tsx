@@ -17,11 +17,13 @@ import { type SearchResult } from '../utils/getWeather';
 type ElementProps = {
   item: SearchResult;
   index: number;
+  handleAdd: (url: string) => void;
 };
 
 export default function LocationResult({
   item,
   index,
+  handleAdd,
 }: ElementProps): JSX.Element {
   const countryCode = iso
     .whereCountry(item.country)
@@ -72,11 +74,12 @@ export default function LocationResult({
 
         <S.ContainerBtn
           onPress={() => {
+            handleAdd(item?.url);
             // handleAdd(item?.url, item?.id);
-            // exitSharedValue.value = withSpring(-1000, {
-            //   velocity: 200,
-            //   mass: 5,
-            // });
+            exitSharedValue.value = withSpring(-1000, {
+              velocity: 200,
+              mass: 5,
+            });
           }}
         >
           <Ionicons name="add" size={32} color={COLORS.primary} />

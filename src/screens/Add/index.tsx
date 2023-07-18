@@ -1,16 +1,16 @@
 import LocationResult from '@/components/LocationResult';
 import SearchInput from '@/components/SearchInput';
 import { type SearchResult, getSearch } from '@/components/utils/getWeather';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import CityContext, { City } from '@/database/CityContext';
 import * as S from './styles';
 
 export default function Add(): JSX.Element {
   const [search, setSearch] = useState('');
   const [result, setResult] = useState<SearchResult[] | null>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [data, setData] = useState([]);
+  // const [cities, setCities] = useState<CityType>(null);
 
   function handleSearch(): void {
     setIsLoading(true);
@@ -27,6 +27,28 @@ export default function Add(): JSX.Element {
         console.log(err);
       });
   }
+
+  const { useRealm, useQuery, useObject } = CityContext;
+
+  const realm = useRealm();
+
+  const handleAddCity = useCallback(
+    (url: string): void => {
+      if (url.length === 0) {
+        return;
+      }
+      realm.write(() => {
+        realm.create('City', City.generate(url));
+      });
+    },
+    [realm],
+  );
+
+  const cities = useQuery(City);
+
+  console.log('====================================');
+  console.log(cities);
+  console.log('====================================');
 
   return (
     <S.Container>
@@ -49,7 +71,11 @@ export default function Add(): JSX.Element {
           contentContainerStyle={styles.contentContainer}
           data={result}
           renderItem={({ item, index }) => (
-            <LocationResult item={item} index={index} />
+            <LocationResult
+              item={item}
+              index={index}
+              handleAdd={handleAddCity}
+            />
           )}
           showsVerticalScrollIndicator={false}
           // keyExtractor={(item) => item.id}

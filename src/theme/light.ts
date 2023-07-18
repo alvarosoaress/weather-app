@@ -21,6 +21,7 @@ export default {
     boldDisplay: 'SFPRODisplayBold',
   },
   SIZES: {
+    xxSmall: '5px',
     xSmall: '10px',
     small: '12px',
     medium: '16px',
