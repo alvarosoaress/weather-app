@@ -17,7 +17,7 @@ import { type SearchResult } from '../utils/getWeather';
 type ElementProps = {
   item: SearchResult;
   index: number;
-  handleAdd: (url: string) => void;
+  handleAdd: (city: SearchResult) => Promise<void>;
 };
 
 export default function LocationResult({
@@ -33,7 +33,8 @@ export default function LocationResult({
 
   const animatedStyles: Partial<ViewProps> = {
     style: {
-      transform: [{ translateX: exitSharedValue.value }],
+      // transform: [{ translateX: exitSharedValue.value }],
+      translateX: exitSharedValue.value,
     },
   };
 
@@ -46,7 +47,7 @@ export default function LocationResult({
   return (
     <AnimatePresence>
       <S.Container
-        layout={Layout.stiffness(1)}
+        // layout={Layout.stiffness(1)}
         from={{
           opacity: 0,
           translateY: 100,
@@ -74,8 +75,7 @@ export default function LocationResult({
 
         <S.ContainerBtn
           onPress={() => {
-            handleAdd(item?.url);
-            // handleAdd(item?.url, item?.id);
+            // void handleAdd(item);
             exitSharedValue.value = withSpring(-1000, {
               velocity: 200,
               mass: 5,
