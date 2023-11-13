@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@icons": ["./constants/icons.js"],
+        "@images": ["./constants/images.js"],
+        "@theme": ["./constants/theme.js"],
+        "@hooks": ["components/common/hooks/getLocalWeather.js"],
+      }
+    }
+  }

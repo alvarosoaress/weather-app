@@ -5,6 +5,11 @@
       "bundler": "metro"
     },
     "name": "wheater-app",
-    "slug": "wheater-app"
+    "slug": "wheater-app",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#232136"
+    }
   }
 }
