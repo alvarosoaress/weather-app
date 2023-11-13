@@ -31,23 +31,28 @@ export default function LocationResult({
 
   const exitSharedValue = useSharedValue(0);
 
-  const animatedStyles: Partial<ViewProps> = {
-    style: {
-      // transform: [{ translateX: exitSharedValue.value }],
-      translateX: exitSharedValue.value,
-    },
-  };
+  //   const animatedStyles: Partial<ViewProps> = {
+  //     style: {
+  //       // transform: [{ translateX: exitSharedValue.value }],
+  //       translateX: exitSharedValue.value,
+  //     },
+  //   };
 
-  const exitAnimated: Partial<ViewProps> = useAnimatedStyle(
-    () => animatedStyles,
-  );
+  //   const exitAnimated: Partial<ViewProps> = useAnimatedStyle(
+  //     () => animatedStyles,
+  //   );
+
+  // TODO TESTE->>>
+  const exitAnimated = useAnimatedStyle(() => ({
+    translateX: exitSharedValue.value,
+  })) as Partial<ViewProps>;
 
   const { COLORS } = useTheme();
 
   return (
     <AnimatePresence>
       <S.Container
-        // layout={Layout.stiffness(1)}
+        layout={Layout.stiffness(1)}
         from={{
           opacity: 0,
           translateY: 100,
@@ -75,7 +80,7 @@ export default function LocationResult({
 
         <S.ContainerBtn
           onPress={() => {
-            // void handleAdd(item);
+            void handleAdd(item);
             exitSharedValue.value = withSpring(-1000, {
               velocity: 200,
               mass: 5,

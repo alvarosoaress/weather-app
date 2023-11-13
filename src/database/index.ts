@@ -1,9 +1,12 @@
 import { type SearchResult } from '@/components/utils/getWeather';
 import { type DataSnapshot, get, ref, set } from 'firebase/database';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 import db from '../../firebaseConfig';
 
+// TODO Verificar se val() pode ser nulo
 type getCitiesType = {
-  val: () => SearchResult[];
+  val: () => Record<number, SearchResult>;
 } & Omit<DataSnapshot, 'val'>;
 
 export async function saveCity(city: SearchResult): Promise<void> {
@@ -20,21 +23,36 @@ export async function saveCity(city: SearchResult): Promise<void> {
 }
 
 export async function getCities(): Promise<SearchResult[] | null> {
-  let result: SearchResult[] | null = null;
-  await get(ref(db, `cities/`))
-    // eslint-disable-next-line consistent-return, @typescript-eslint/no-invalid-void-type
-    .then((snapshot: getCitiesType): SearchResult[] | void => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        result = snapshot.val();
-      } else {
-        console.log('No data available');
-        result = null;
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  try {
+    const snapshot: getCitiesType = await get(ref(db, 'cities/'));
+    if (snapshot.exists() && snapshot.val() !== null) {
+      console.log(snapshot.val());
+      const ja = snapshot.val();
+      const result = Object.values(ja);
+      return result;
+    }
+    console.log('No data available');
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
-  return result;
+export function useGetCities(
+  setCidades: React.Dispatch<React.SetStateAction<SearchResult[] | null>>,
+): void {
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchCities(): Promise<void> {
+        try {
+          setCidades(await getCities());
+        } catch (error) {
+          console.log('Error in useGetCities ', error);
+        }
+      }
+
+      void fetchCities();
+    }, [setCidades]),
+  );
 }

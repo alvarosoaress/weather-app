@@ -1,9 +1,8 @@
 import LocationResult from '@/components/LocationResult';
 import SearchInput from '@/components/SearchInput';
 import { type SearchResult, getSearch } from '@/components/utils/getWeather';
-import { getCities, saveCity } from '@/database';
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { saveCity } from '@/database';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import * as S from './styles';
 
@@ -28,20 +27,6 @@ export default function Add(): JSX.Element {
         console.log(err);
       });
   }
-
-  useFocusEffect(
-    useCallback(() => {
-      async function fetchCities(): Promise<void> {
-        try {
-          await getCities();
-        } catch (e) {
-          // Handle error
-        }
-      }
-
-      void fetchCities();
-    }, []),
-  );
 
   // function handleAddCity(id: number) {
   //   setTimeout(() => {
